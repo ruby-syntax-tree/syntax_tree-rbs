@@ -1,0 +1,5 @@
+_Foo
+::_Foo
+Foo::_Foo
+::Foo::_Foo
+_Foo[untyped, nil]
