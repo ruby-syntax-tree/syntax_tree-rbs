@@ -36,14 +36,14 @@ From the CLI:
 
 ```sh
 $ stree ast --plugins=rbs file.rbs
-(root object=(object values={"Hello"=>(literal value="world!")}))
+(root declarations=[(constant name=(type-name "Hello") type=(class-instance (type-name "World")))])
 ```
 
 or
 
 ```sh
 $ stree format --plugins=rbs file.rbs
-{ "Hello": "world!" }
+Hello: World
 ```
 
 or

@@ -11,7 +11,7 @@ GEM
     docile (1.4.0)
     minitest (5.15.0)
     rake (13.0.6)
-    rbs (2.2.2)
+    rbs (2.3.2)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -22,6 +22,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   bundler
@@ -31,4 +32,4 @@ DEPENDENCIES
   syntax_tree-rbs!
 
 BUNDLED WITH
-   2.4.0.dev
+   2.3.6

@@ -84,4 +84,6 @@ module SyntaxTree
       end
     end
   end
+
+  register_handler(".rbs", RBS)
 end
