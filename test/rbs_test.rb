@@ -85,7 +85,9 @@ class RBSTest < Minitest::Test
     "include Foo",
     "@foo: String",
     "def t: (T t) -> void",
-    "prepend Foo"
+    "prepend Foo",
+    "private def t: (T t) -> void",
+    "public attr_accessor foo: Foo",
   ]
 
   test_fixtures("members_with_comments", fixtures) do |fixture|
@@ -127,7 +129,9 @@ class RBSTest < Minitest::Test
     "extend Foo",
     "include Foo",
     "def t: (T t) -> void",
-    "prepend Foo"
+    "prepend Foo",
+    "private def t: (T t) -> void",
+    "public attr_accessor foo: Foo",
   ]
 
   test_fixtures("members_with_annotations", fixtures) do |fixture|
