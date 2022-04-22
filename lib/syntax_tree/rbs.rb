@@ -5,13 +5,10 @@ require "syntax_tree"
 
 require_relative "rbs/declarations"
 require_relative "rbs/members"
+require_relative "rbs/shims"
 require_relative "rbs/types"
 require_relative "rbs/utils"
 require_relative "rbs/version"
-
-if Gem::Version.new(RBS::VERSION) < Gem::Version.new("2.0.0")
-  require_relative "rbs/shims"
-end
 
 module SyntaxTree
   module RBS

@@ -16,10 +16,7 @@ module SyntaxTree
 
       def format(q)
         q.group do
-          if node.respond_to?(:visibility) && node.visibility
-            q.text("#{node.visibility} ")
-          end
-
+          q.text("#{node.visibility} ") if node.visibility
           q.text("attr_#{type} ")
           q.text("self.") if node.kind == :singleton
           q.text(node.name)
@@ -47,7 +44,7 @@ module SyntaxTree
         q.text("name=")
         q.pp(node.name)
 
-        if node.respond_to?(:visibility) && node.visibility
+        if node.visibility
           q.breakable
           q.text("visibility=")
           q.pp(node.visibility)
@@ -291,10 +288,7 @@ module RBS
           SyntaxTree::RBS::Annotations.maybe_format(q, annotations)
 
           q.group do
-            if respond_to?(:visibility) && visibility
-              q.text("#{visibility} ")
-            end
-
+            q.text("#{visibility} ") if visibility
             q.text("def ")
 
             if kind == :singleton
@@ -346,7 +340,7 @@ module RBS
             q.text("name=")
             q.pp(name)
 
-            if respond_to?(:visibility) && visibility
+            if visibility
               q.breakable
               q.text("visibility=")
               q.pp(visibility)

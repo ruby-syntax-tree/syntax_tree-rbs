@@ -1,0 +1,4 @@
+private def t: -> ("a" | "b" | "c")
+private def self.t: -> void | ...
+public def t: -> ("a" & ("b" | "c"))?
+public def t: (untyped `untyped`) -> void

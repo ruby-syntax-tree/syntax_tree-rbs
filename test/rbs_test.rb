@@ -85,10 +85,15 @@ class RBSTest < Minitest::Test
     "include Foo",
     "@foo: String",
     "def t: (T t) -> void",
-    "prepend Foo",
-    "private def t: (T t) -> void",
-    "public attr_accessor foo: Foo",
+    "prepend Foo"
   ]
+
+  if Gem::Version.new(RBS::VERSION) >= Gem::Version.new("2.0.0")
+    fixtures += [
+      "private def t: (T t) -> void",
+      "public attr_accessor foo: Foo"
+    ]
+  end
 
   test_fixtures("members_with_comments", fixtures) do |fixture|
     <<~RBS
@@ -129,10 +134,15 @@ class RBSTest < Minitest::Test
     "extend Foo",
     "include Foo",
     "def t: (T t) -> void",
-    "prepend Foo",
-    "private def t: (T t) -> void",
-    "public attr_accessor foo: Foo",
+    "prepend Foo"
   ]
+
+  if Gem::Version.new(RBS::VERSION) >= Gem::Version.new("2.0.0")
+    fixtures += [
+      "private def t: (T t) -> void",
+      "public attr_accessor foo: Foo"
+    ]
+  end
 
   test_fixtures("members_with_annotations", fixtures) do |fixture|
     <<~RBS
@@ -314,6 +324,22 @@ class RBSTest < Minitest::Test
     def test_interface_with_fancy_bounded_type_params
       assert_format(<<~RBS)
         interface _Foo[U < singleton(::Hash), V < W[X, Y]]
+        end
+      RBS
+    end
+
+    test_fixture_set("visibility_members") do |line|
+      <<~RBS
+        class T
+          #{line}
+        end
+      RBS
+    end
+
+    test_fixture_set("visibility_methods") do |line|
+      <<~RBS
+        class T
+          #{line}
         end
       RBS
     end

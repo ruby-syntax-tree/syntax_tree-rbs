@@ -1,0 +1,4 @@
+private attr_accessor foo: Foo
+private attr_accessor foo(@bar): Foo
+public attr_accessor foo(): Foo
+public attr_writer self.foo(@bar): Foo
