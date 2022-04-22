@@ -9,6 +9,10 @@ require_relative "rbs/types"
 require_relative "rbs/utils"
 require_relative "rbs/version"
 
+if Gem::Version.new(RBS::VERSION) < Gem::Version.new("2.0.0")
+  require_relative "rbs/shims"
+end
+
 module SyntaxTree
   module RBS
     # A slight extension to the default PP formatter that keeps track of the

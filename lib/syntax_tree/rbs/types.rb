@@ -139,7 +139,7 @@ module RBS
 
     class Literal
       def format(q)
-        unless literal in String
+        unless literal.is_a?(String)
           q.text(literal.inspect)
           return
         end
