@@ -132,7 +132,7 @@ module SyntaxTree
 
       def format(q)
         node.name.format(q)
-        return if node.type_params.length == 0
+        return if node.type_params.empty?
 
         q.text("[")
         q.seplist(node.type_params, -> { q.text(", ") }) do |param|
@@ -308,7 +308,8 @@ module SyntaxTree
           if node.respond_to?(:type_params) && node.type_params.any?
             q.text("[")
             q.seplist(node.type_params, -> { q.text(", ") }) do |param|
-              q.text(param.name)
+              # We need to do a type check here to support RBS 1.0
+              q.text(param.is_a?(Symbol) ? param.to_s : param.name)
             end
             q.text("] ")
           end
