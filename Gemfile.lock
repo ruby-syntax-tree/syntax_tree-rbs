@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    syntax_tree-rbs (0.2.0)
+    syntax_tree-rbs (0.3.0)
       prettier_print
       rbs
       syntax_tree (>= 2.0.1)
