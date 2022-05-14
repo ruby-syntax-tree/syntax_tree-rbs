@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     syntax_tree-rbs (0.2.0)
+      prettier_print
       rbs
       syntax_tree (>= 2.0.1)
 
@@ -10,6 +11,7 @@ GEM
   specs:
     docile (1.4.0)
     minitest (5.15.0)
+    prettier_print (0.1.0)
     rake (13.0.6)
     rbs (2.4.0)
     simplecov (0.21.2)
