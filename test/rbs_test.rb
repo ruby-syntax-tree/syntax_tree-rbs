@@ -292,6 +292,13 @@ class RBSTest < Minitest::Test
     assert_format("T: { \"日本語\" => Integer }")
   end
 
+  def test_maxwidth
+    assert_equal(<<~RBS, SyntaxTree::RBS.format("T: untyped | void", 10))
+    T: untyped
+    | void
+    RBS
+  end
+
   if Gem::Version.new(RBS::VERSION) >= Gem::Version.new("2.0.0")
     def test_class_with_bounded_type_param
       assert_format(<<~RBS)
@@ -357,9 +364,7 @@ class RBSTest < Minitest::Test
     assert_equal(expected.strip, formatted.strip)
 
     # Next, check that the pretty-print functions are implemented all of the way
-    # down the tree. We're only going to do this on Ruby >= 3.0.0 because
-    # there's some issue with prettyprint below that that I don't want to deal
-    # with.
+    # down the tree.
     if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.0.0")
       formatter = PP.new(+"")
       SyntaxTree::RBS.parse(original).pretty_print(formatter)
