@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = %w[lib]
 
+  spec.add_dependency "prettier_print"
   spec.add_dependency "rbs"
   spec.add_dependency "syntax_tree", ">= 2.0.1"
 

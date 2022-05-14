@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "prettier_print"
 require "rbs"
 require "syntax_tree"
 
@@ -12,11 +13,11 @@ require_relative "rbs/version"
 
 module SyntaxTree
   module RBS
-    # A slight extension to the default PP formatter that keeps track of the
-    # source (so that it can be referenced by annotations if they need it) and
-    # keeps track of the level of intersections and unions so that parentheses
-    # can be forced if necessary.
-    class Formatter < PP
+    # A slight extension to the default PrettierPrint formatter that keeps track
+    # of the source (so that it can be referenced by annotations if they need
+    # it) and keeps track of the level of intersections and unions so that
+    # parentheses can be forced if necessary.
+    class Formatter < PrettierPrint
       attr_reader :source
 
       def initialize(source, ...)
