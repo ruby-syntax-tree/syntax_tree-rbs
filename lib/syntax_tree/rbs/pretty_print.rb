@@ -15,48 +15,28 @@ module SyntaxTree
 
       # Visit a RBS::AST::Declarations::Alias node.
       def visit_alias_declaration(node)
-        q.group(2, "(constant", ")") do
+        group("constant") do
           print_comment(node)
           print_annotations(node)
-
-          q.breakable
-          q.text("name=")
-          visit(node.name)
-
-          q.breakable
-          q.text("type=")
-          visit(node.type)
+          visit_field("name", node.name)
+          visit_field("type", node.type)
         end
       end
 
       # Visit a RBS::AST::Members::Alias node.
       def visit_alias_member(node)
-        q.group(2, "(alias", ")") do
+        group("alias") do
           print_comment(node)
           print_annotations(node)
-
-          if node.kind == :singleton
-            q.breakable
-            q.text("singleton")
-          end
-
-          q.breakable
-          q.text("new_name=")
-          q.pp(node.new_name)
-
-          q.breakable
-          q.text("old_name=")
-          q.pp(node.old_name)
+          bool_field("singleton") if node.kind == :singleton
+          pp_field("new_name", node.new_name)
+          pp_field("old_name", node.old_name)
         end
       end
 
       # Visit a RBS::Types::Alias node.
       def visit_alias_type(node)
-        q.group(2, "(alias", ")") do
-          q.breakable
-          q.text("name=")
-          visit(node.name)
-        end
+        group("alias") { visit_field("name", node.name) }
       end
 
       # Visit a RBS::Types::Bases::Any node.
@@ -64,7 +44,7 @@ module SyntaxTree
 
       # Visit a RBS::AST::Members::AttrAccessor node.
       def visit_attr_accessor_member(node)
-        q.group(2, "(attr-accessor", ")") do
+        group("attr-accessor") do
           print_comment(node)
           print_annotations(node)
           print_attribute(node)
@@ -73,7 +53,7 @@ module SyntaxTree
 
       # Visit a RBS::AST::Members::AttrReader node.
       def visit_attr_reader_member(node)
-        q.group(2, "(attr-reader", ")") do
+        group("attr-reader") do
           print_comment(node)
           print_annotations(node)
           print_attribute(node)
@@ -82,7 +62,7 @@ module SyntaxTree
 
       # Visit a RBS::AST::Members::AttrWriter node.
       def visit_attr_writer_member(node)
-        q.group(2, "(attr-writer", ")") do
+        group("attr-writer") do
           print_comment(node)
           print_annotations(node)
           print_attribute(node)
@@ -97,7 +77,7 @@ module SyntaxTree
 
       # Visit a RBS::AST::Declarations::Class node.
       def visit_class_declaration(node)
-        q.group(2, "(class", ")") do
+        group("class") do
           print_comment(node)
           print_annotations(node)
           print_name_and_type_params(node)
@@ -105,38 +85,29 @@ module SyntaxTree
           if node.super_class
             q.breakable
             q.text("super_class=")
-            q.group(2, "(class", ")") { print_name_and_args(node.super_class) }
+            print_name_and_args(node.super_class)
           end
 
-          q.breakable
-          q.text("members=")
-          q.pp(node.members)
+          pp_field("members", node.members)
         end
       end
 
       # Visit a RBS::Types::ClassInstance node.
       def visit_class_instance_type(node)
-        q.group(2, "(class-instance", ")") { print_name_and_args(node) }
+        group("class-instance") { print_name_and_args(node) }
       end
 
       # Visit a RBS::AST::Members::ClassInstanceVariable node.
       def visit_class_instance_variable_member(node)
-        q.group(2, "(class-instance-variable", ")") do
+        group("class-instance-variable") do
           print_comment(node)
-
-          q.breakable
-          q.text("name=")
-          q.pp(node.name)
+          pp_field("name", node.name)
         end
       end
 
       # Visit a RBS::Types::ClassSingleton node.
       def visit_class_singleton_type(node)
-        q.group(2, "(class-singleton", ")") do
-          q.breakable
-          q.text("name=")
-          q.pp(node.name)
-        end
+        group("class-singleton") { pp_field("name", node.name) }
       end
 
       # Visit a RBS::Types::Bases::Class node.
@@ -144,33 +115,24 @@ module SyntaxTree
 
       # Visit a RBS::AST::Members::ClassVariable node.
       def visit_class_variable_member(node)
-        q.group(2, "(class-variable", ")") do
+        group("class-variable") do
           print_comment(node)
-
-          q.breakable
-          q.text("name=")
-          q.pp(node.name)
+          pp_field("name", node.name)
         end
       end
 
       # Visit a RBS::AST::Declarations::Constant node.
       def visit_constant_declaration(node)
-        q.group(2, "(constant", ")") do
+        group("constant") do
           print_comment(node)
-
-          q.breakable
-          q.text("name=")
-          visit(node.name)
-
-          q.breakable
-          q.text("type=")
-          visit(node.type)
+          visit_field("name", node.name)
+          visit_field("type", node.type)
         end
       end
 
       # Visit a RBS::AST::Members::Extend node.
       def visit_extend_member(node)
-        q.group(2, "(extend", ")") do
+        group("extend") do
           print_comment(node)
           print_annotations(node)
           print_name_and_args(node)
@@ -179,37 +141,24 @@ module SyntaxTree
 
       # Visit a RBS::Types::Function::Param node.
       def visit_function_param_type(node)
-        q.group(2, "(param", ")") do
-          q.breakable
-          q.text("type=")
-          visit(node.type)
-
-          if node.name
-            q.breakable
-            q.text("name=")
-            q.pp(node.name)
-          end
+        group("param") do
+          visit_field("type", node.type)
+          pp_field("name", node.name) if node.name
         end
       end
 
       # Visit a RBS::AST::Declarations::Global node.
       def visit_global_declaration(node)
-        q.group(2, "(global", ")") do
+        group("global") do
           print_comment(node)
-
-          q.breakable
-          q.text("name=")
-          q.pp(node.name)
-
-          q.breakable
-          q.text("type=")
-          visit(node.type)
+          pp_field("name", node.name)
+          visit_field("type", node.type)
         end
       end
 
       # Visit a RBS::AST::Members::Include node.
       def visit_include_member(node)
-        q.group(2, "(include", ")") do
+        group("include") do
           print_comment(node)
           print_annotations(node)
           print_name_and_args(node)
@@ -221,88 +170,58 @@ module SyntaxTree
 
       # Visit a RBS::AST::Members::InstanceVariable node.
       def visit_instance_variable_member(node)
-        q.group(2, "(instance-variable", ")") do
+        group("instance-variable") do
           print_comment(node)
-
-          q.breakable
-          q.text("name=")
-          q.pp(node.name)
+          pp_field("name", node.name)
         end
       end
 
       # Visit a RBS::AST::Declarations::Interface node.
       def visit_interface_declaration(node)
-        q.group(2, "(interface", ")") do
+        group("interface") do
           print_comment(node)
           print_annotations(node)
           print_name_and_type_params(node)
-
-          q.breakable
-          q.text("members=")
-          q.pp(node.members)
+          pp_field("members", node.members)
         end
       end
 
       # Visit a RBS::Types::Interface node.
       def visit_interface_type(node)
-        q.group(2, "(interface", ")") { print_name_and_args(node) }
+        group("interface") { print_name_and_args(node) }
       end
 
       # Visit a RBS::Types::Intersection node.
       def visit_intersection_type(node)
-        q.group(2, "(intersection", ")") do
-          q.breakable
-          q.text("types=")
-          q.pp(node.types)
-        end
+        group("intersection") { pp_field("types", node.types) }
       end
 
       # Visit a RBS::Types::Literal node.
       def visit_literal_type(node)
-        q.group(2, "(literal", ")") do
-          q.breakable
-          q.pp(node.literal)
-        end
+        group("literal") { pp_field("literal", node.literal) }
       end
 
       # Visit a RBS::AST::Members::MethodDefinition node.
       def visit_method_definition_member(node)
-        q.group(2, "(method-definition", ")") do
+        group("(method-definition") do
           print_comment(node)
           print_annotations(node)
-
-          q.breakable
-          q.text("kind=")
-          q.pp(node.kind)
-
-          q.breakable
-          q.text("name=")
-          q.pp(node.name)
-
-          if node.visibility
-            q.breakable
-            q.text("visibility=")
-            q.pp(node.visibility)
-          end
-
-          if node.overload?
-            q.breakable
-            q.text("overload")
-          end
+          pp_field("kind", node.kind)
+          pp_field("name", node.name)
+          pp_field("visibility", node.visibility) if node.visibility
+          bool_field("overload") if node.overload?
 
           q.breakable
           q.text("types=")
           q.group(2, "[", "]") do
-            q.breakable("")
             q.seplist(node.types) { |type| print_method_signature(type) }
-            q.breakable("")
           end
         end
       end
 
       # Visit a RBS::AST::Declarations::Module node.
       def visit_module_declaration(node)
-        q.group(2, "(module", ")") do
+        group("module") do
           print_comment(node)
           print_annotations(node)
           print_name_and_type_params(node)
@@ -312,14 +231,12 @@ module SyntaxTree
             q.text("self_types=")
             q.group(2, "[", "]") do
               q.seplist(node.self_types) do |self_type|
-                q.group(2, "(self-type", ")") { print_name_and_args(self_type) }
+                print_name_and_args(self_type)
               end
             end
           end
 
-          q.breakable
-          q.text("members=")
-          q.pp(node.members)
+          pp_field("members", node.members)
         end
       end
 
@@ -328,15 +245,12 @@ module SyntaxTree
 
       # Visit a RBS::Types::Optional node.
       def visit_optional_type(node)
-        q.group(2, "(optional", ")") do
-          q.breakable
-          visit(node.type)
-        end
+        group("optional") { visit_field("type", node.type) }
       end
 
       # Visit a RBS::AST::Members::Prepend node.
       def visit_prepend_member(node)
-        q.group(2, "(prepend", ")") do
+        group("prepend") do
           print_comment(node)
           print_annotations(node)
           print_name_and_args(node)
@@ -350,7 +264,7 @@ module SyntaxTree
 
       # Visit a RBS::Types::Proc node.
       def visit_proc_type(node)
-        q.group(2, "(proc", ")") { print_method_signature(node) }
+        group("proc") { print_method_signature(node) }
       end
 
       # Visit a RBS::AST::Members::Public node.
@@ -360,20 +274,12 @@ module SyntaxTree
 
       # Visit a RBS::Types::Record node.
       def visit_record_type(node)
-        q.group(2, "(record", ")") do
-          q.breakable
-          q.text("fields=")
-          q.pp(node.fields)
-        end
+        group("record") { pp_field("fields", node.fields) }
       end
 
       # Visit a SyntaxTree::RBS::Root node.
       def visit_root(node)
-        q.group(2, "(root", ")") do
-          q.breakable
-          q.text("declarations=")
-          q.pp(node.declarations)
-        end
+        group("root") { pp_field("declarations", node.declarations) }
       end
 
       # Visit a RBS::Types::Self node.
@@ -384,16 +290,12 @@ module SyntaxTree
 
       # Visit a RBS::Types::Tuple node.
       def visit_tuple_type(node)
-        q.group(2, "(tuple", ")") do
-          q.breakable
-          q.text("types=")
-          q.pp(node.types)
-        end
+        group("tuple") { pp_field("types", node.types) }
       end
 
       # Visit a RBS::TypeName node.
       def visit_type_name(node)
-        q.group(2, "(type-name", ")") do
+        group("type-name") do
           q.breakable
           q.pp(node.to_s)
         end
@@ -401,26 +303,53 @@ module SyntaxTree
 
       # Visit a RBS::Types::Union node.
       def visit_union_type(node)
-        q.group(2, "(union", ")") do
-          q.breakable
-          q.text("types=")
-          q.pp(node.types)
-        end
+        group("union") { pp_field("types", node.types) }
       end
 
       # Visit a RBS::Types::Variable node.
       def visit_variable_type(node)
-        q.group(2, "(variable", ")") do
-          q.breakable
-          q.text("name=")
-          q.pp(node.name)
-        end
+        group("variable") { pp_field("name", node.name) }
       end
 
       # Visit a RBS::Types::Bases::Void node.
       alias visit_void_type visit_base_type
 
       private
+
+      #-------------------------------------------------------------------------
+      # Printing structure
+      #-------------------------------------------------------------------------
+
+      def group(name)
+        q.group do
+          q.text("(")
+          q.text(name)
+          q.nest(2) { yield }
+          q.breakable("")
+          q.text(")")
+        end
+      end
+
+      def bool_field(name)
+        q.breakable
+        q.text(name)
+      end
+
+      def pp_field(name, field)
+        q.breakable
+        q.text("#{name}=")
+        q.pp(field)
+      end
+
+      def visit_field(name, field)
+        q.breakable
+        q.text("#{name}=")
+        visit(field)
+      end
+
+      #-------------------------------------------------------------------------
+      # Printing certain kinds of nodes
+      #-------------------------------------------------------------------------
 
       def print_annotations(node)
         annotations = node.annotations
