@@ -105,9 +105,7 @@ module SyntaxTree
           if node.super_class
             q.breakable
             q.text("super_class=")
-            q.group(2, "(class", ")") do
-              print_name_and_args(node.super_class)
-            end
+            q.group(2, "(class", ")") { print_name_and_args(node.super_class) }
           end
 
           q.breakable
@@ -118,9 +116,7 @@ module SyntaxTree
 
       # Visit a RBS::Types::ClassInstance node.
       def visit_class_instance_type(node)
-        q.group(2, "(class-instance", ")") do
-          print_name_and_args(node)
-        end
+        q.group(2, "(class-instance", ")") { print_name_and_args(node) }
       end
 
       # Visit a RBS::AST::Members::ClassInstanceVariable node.
@@ -249,9 +245,7 @@ module SyntaxTree
 
       # Visit a RBS::Types::Interface node.
       def visit_interface_type(node)
-        q.group(2, "(interface", ")") do
-          print_name_and_args(node)
-        end
+        q.group(2, "(interface", ")") { print_name_and_args(node) }
       end
 
       # Visit a RBS::Types::Intersection node.
@@ -300,9 +294,7 @@ module SyntaxTree
           q.text("types=")
           q.group(2, "[", "]") do
             q.breakable("")
-            q.seplist(node.types) do |type|
-              print_method_signature(type)
-            end
+            q.seplist(node.types) { |type| print_method_signature(type) }
             q.breakable("")
           end
         end
@@ -320,9 +312,7 @@ module SyntaxTree
             q.text("self_types=")
             q.group(2, "[", "]") do
               q.seplist(node.self_types) do |self_type|
-                q.group(2, "(self-type", ")") do
-                  print_name_and_args(self_type)
-                end
+                q.group(2, "(self-type", ")") { print_name_and_args(self_type) }
               end
             end
           end
@@ -360,9 +350,7 @@ module SyntaxTree
 
       # Visit a RBS::Types::Proc node.
       def visit_proc_type(node)
-        q.group(2, "(proc", ")") do
-          print_method_signature(node)
-        end
+        q.group(2, "(proc", ")") { print_method_signature(node) }
       end
 
       # Visit a RBS::AST::Members::Public node.

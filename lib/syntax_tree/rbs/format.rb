@@ -266,9 +266,10 @@ module SyntaxTree
         source = SyntaxTree::Quotes.normalize(source[1..-2], quote)
 
         q.text(quote)
-        q.seplist(source.split(/\r?\n/), -> { q.breakable(force: true) }) do |line|
-          q.text(line)
-        end
+        q.seplist(
+          source.split(/\r?\n/),
+          -> { q.breakable(force: true) }
+        ) { |line| q.text(line) }
         q.text(quote)
       end
 
@@ -287,7 +288,15 @@ module SyntaxTree
             q.text("self?.")
           end
 
-          q.text(::RBS::Parser::KEYWORDS.include?(node.name.to_s) ? "`#{node.name}`" : node.name)
+          q.text(
+            (
+              if ::RBS::Parser::KEYWORDS.include?(node.name.to_s)
+                "`#{node.name}`"
+              else
+                node.name
+              end
+            )
+          )
           q.text(":")
 
           if node.types.length == 1 && !node.overload?
@@ -409,7 +418,7 @@ module SyntaxTree
             q.breakable(force: true)
             q.breakable(force: true)
           end
-  
+
         q.seplist(node.declarations, separator) do |declaration|
           visit(declaration)
         end
@@ -513,14 +522,15 @@ module SyntaxTree
         comment = node.comment
         return unless comment
 
-        q.seplist(comment.string.split(/\r?\n/), -> { q.breakable(force: true) }) do |line|
-          q.text("# #{line}")
-        end
+        q.seplist(
+          comment.string.split(/\r?\n/),
+          -> { q.breakable(force: true) }
+        ) { |line| q.text("# #{line}") }
         q.breakable(force: true)
       end
 
       # Nodes which have members will all flow their printing through this
-      # class, which keeps track of 
+      # class, which keeps track of
       def print_members(node)
         last_line = nil
 
@@ -558,18 +568,18 @@ module SyntaxTree
 
           # Prefix each of the optional positional parameters with a ?.
           node.type.optional_positionals.each do |param|
-            params << -> {
+            params << -> do
               q.text("?")
               visit(param)
-            }
+            end
           end
 
           # If a rest positional is present, print it and prefix it with a *.
           if node.type.rest_positionals
-            params << -> {
+            params << -> do
               q.text("*")
               visit(node.type.rest_positionals)
-            }
+            end
           end
 
           # Directly visit any required positional parameters that occur after
@@ -581,31 +591,31 @@ module SyntaxTree
           # Print all of the required keyword parameters with their name and
           # parameter separated by a colon.
           node.type.required_keywords.each do |name, param|
-            params << -> {
+            params << -> do
               q.text(name)
               q.text(": ")
               visit(param)
-            }
+            end
           end
 
           # Print all of the required keyword parameters with their name and
           # parameter separated by a colon, prefixed by a ?.
           node.type.optional_keywords.each do |name, param|
-            params << -> {
+            params << -> do
               q.text("?")
               q.text(name)
               q.text(": ")
               visit(param)
-            }
+            end
           end
 
           # Print the rest keyword parameter if it exists by prefixing it with
           # a ** operator.
           if node.type.rest_keywords
-            params << -> {
+            params << -> do
               q.text("**")
               visit(node.type.rest_keywords)
-            }
+            end
           end
 
           if params.any?
@@ -659,9 +669,7 @@ module SyntaxTree
         q.seplist(node.type_params, -> { q.text(", ") }) do |param|
           parts = []
 
-          if param.unchecked?
-            parts << "unchecked"
-          end
+          parts << "unchecked" if param.unchecked?
 
           if param.variance == :covariant
             parts << "out"

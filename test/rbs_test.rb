@@ -9,10 +9,12 @@ class RBSTest < Minitest::Test
   end
 
   def self.test_fixtures(name, fixtures, &block)
-    fixtures.each.with_index(1) do |fixture, index|
-      source = yield fixture
-      define_method("test_#{name}_#{index}") { assert_format(source) }
-    end
+    fixtures
+      .each
+      .with_index(1) do |fixture, index|
+        source = yield fixture
+        define_method("test_#{name}_#{index}") { assert_format(source) }
+      end
   end
 
   test_fixture_set("combination") { |line| "T: #{line}" }
@@ -26,29 +28,23 @@ class RBSTest < Minitest::Test
   test_fixture_set("record") { |line| "T: #{line}" }
   test_fixture_set("tuple") { |line| "T: #{line}" }
 
-  test_fixture_set("generic") do |line|
-    <<~RBS
+  test_fixture_set("generic") { |line| <<~RBS }
       class T
         def t: #{line}
       end
     RBS
-  end
 
-  test_fixture_set("member") do |line|
-    <<~RBS
+  test_fixture_set("member") { |line| <<~RBS }
       class T
         #{line}
       end
     RBS
-  end
 
-  test_fixture_set("method") do |line|
-    <<~RBS
+  test_fixture_set("method") { |line| <<~RBS }
       class T
         #{line}
       end
     RBS
-  end
 
   #-----------------------------------------------------------------------------
   # Declaration comment tests
@@ -60,15 +56,13 @@ class RBSTest < Minitest::Test
     "Foo: String",
     "$foo: String",
     "interface _Foo\nend",
-    "module Foo\nend",
+    "module Foo\nend"
   ]
 
-  test_fixtures("declarations_with_comments", fixtures) do |fixture|
-    <<~RBS
+  test_fixtures("declarations_with_comments", fixtures) { |fixture| <<~RBS }
       # This is a comment
       #{fixture}
     RBS
-  end
 
   #-----------------------------------------------------------------------------
   # Member comment tests
@@ -95,14 +89,12 @@ class RBSTest < Minitest::Test
     ]
   end
 
-  test_fixtures("members_with_comments", fixtures) do |fixture|
-    <<~RBS
+  test_fixtures("members_with_comments", fixtures) { |fixture| <<~RBS }
       class T
         # This is a comment
         #{fixture}
       end
     RBS
-  end
 
   #-----------------------------------------------------------------------------
   # Declaration annotations tests
@@ -112,15 +104,13 @@ class RBSTest < Minitest::Test
     "type foo = Bar",
     "class Foo\nend",
     "interface _Foo\nend",
-    "module Foo\nend",
+    "module Foo\nend"
   ]
 
-  test_fixtures("declarations_with_annotations", fixtures) do |fixture|
-    <<~RBS
+  test_fixtures("declarations_with_annotations", fixtures) { |fixture| <<~RBS }
       %a{This is an annotation.}
       #{fixture}
     RBS
-  end
 
   #-----------------------------------------------------------------------------
   # Member annotations tests
@@ -144,14 +134,12 @@ class RBSTest < Minitest::Test
     ]
   end
 
-  test_fixtures("members_with_annotations", fixtures) do |fixture|
-    <<~RBS
+  test_fixtures("members_with_annotations", fixtures) { |fixture| <<~RBS }
       class T
         %a{This is an annotation.}
         #{fixture}
       end
     RBS
-  end
 
   #-----------------------------------------------------------------------------
   # Multi-line tests
@@ -335,21 +323,17 @@ class RBSTest < Minitest::Test
       RBS
     end
 
-    test_fixture_set("visibility_members") do |line|
-      <<~RBS
+    test_fixture_set("visibility_members") { |line| <<~RBS }
         class T
           #{line}
         end
       RBS
-    end
 
-    test_fixture_set("visibility_methods") do |line|
-      <<~RBS
+    test_fixture_set("visibility_methods") { |line| <<~RBS }
         class T
           #{line}
         end
       RBS
-    end
   end
 
   private
