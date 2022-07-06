@@ -4,15 +4,19 @@ require "prettier_print"
 require "rbs"
 require "syntax_tree"
 
-require_relative "rbs/declarations"
-require_relative "rbs/members"
 require_relative "rbs/shims"
-require_relative "rbs/types"
-require_relative "rbs/utils"
 require_relative "rbs/version"
 
 module SyntaxTree
   module RBS
+    # This is the parent class of any of the visitors that we define in this
+    # module. It is used to walk through the tree.
+    class Visitor
+      def visit(node)
+        node&.accept(self)
+      end
+    end
+
     # A slight extension to the default PrettierPrint formatter that keeps track
     # of the source (so that it can be referenced by annotations if they need
     # it) and keeps track of the level of intersections and unions so that
@@ -39,35 +43,6 @@ module SyntaxTree
       end
     end
 
-    # This is the root node of the entire tree. It contains all of the top-level
-    # declarations within the file.
-    class Root
-      attr_reader :declarations
-
-      def initialize(declarations)
-        @declarations = declarations
-      end
-
-      def format(q)
-        separator =
-          lambda do
-            q.breakable(force: true)
-            q.breakable(force: true)
-          end
-
-        q.seplist(declarations, separator) { |declaration| declaration.format(q) }
-        q.breakable(force: true)
-      end
-
-      def pretty_print(q)
-        q.group(2, "(root", ")") do
-          q.breakable
-          q.text("declarations=")
-          q.pp(declarations)
-        end
-      end
-    end
-
     class << self
       def format(source, maxwidth = 80)
         formatter = Formatter.new(source, [], maxwidth)
@@ -89,3 +64,7 @@ module SyntaxTree
 
   register_handler(".rbs", RBS)
 end
+
+require_relative "rbs/entrypoints"
+require_relative "rbs/format"
+require_relative "rbs/pretty_print"
