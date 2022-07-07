@@ -9,3 +9,4 @@
 ^(?_bar: nil, **untyped rest) -> void
 ^-> void
 ^{ -> void } -> void
+(^(args) -> ret)?

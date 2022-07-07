@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- Ensure optional proc types have parentheses around them.
+
 ## [0.4.0] - 2022-05-13
 
 ### Added
