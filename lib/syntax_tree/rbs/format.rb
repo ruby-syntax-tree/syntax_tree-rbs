@@ -375,8 +375,12 @@ module SyntaxTree
 
       # Visit a RBS::Types::Proc node.
       def visit_proc_type(node)
-        q.text("^")
-        print_method_signature(node)
+        q.group do
+          q.text("(") if q.force_parens?
+          q.text("^")
+          print_method_signature(node)
+          q.text(")") if q.force_parens?
+        end
       end
 
       # Visit a RBS::AST::Members::Public node.
