@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+- Ruby 2.7.0 is now supported, not just 2.7.3 and above. This allows usage on Ubuntu 20.04 by default.
+
 ## [0.5.0] - 2022-07-07
 
 ### Added
