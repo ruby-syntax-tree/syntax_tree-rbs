@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5.1]
+
+### Added - 2022-09-03
+
+- Ruby 2.7.0 is now supported, not just 2.7.3 and above. This allows usage on Ubuntu 20.04 by default.
 
 ## [0.5.0] - 2022-07-07
 
@@ -42,7 +46,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - 🎉 Initial release! 🎉
 
-[unreleased]: https://github.com/ruby-syntax-tree/syntax_tree-rbs/compare/v0.5.0...HEAD
+[unreleased]: https://github.com/ruby-syntax-tree/syntax_tree-rbs/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/ruby-syntax-tree/syntax_tree-rbs/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/ruby-syntax-tree/syntax_tree-rbs/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/ruby-syntax-tree/syntax_tree-rbs/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/ruby-syntax-tree/syntax_tree-rbs/compare/v0.2.0...v0.3.0

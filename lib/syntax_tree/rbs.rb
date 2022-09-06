@@ -24,8 +24,8 @@ module SyntaxTree
     class Formatter < PrettierPrint
       attr_reader :source
 
-      def initialize(source, ...)
-        super(...)
+      def initialize(source, *rest)
+        super(*rest)
         @source = source
         @force_parens = false
       end
