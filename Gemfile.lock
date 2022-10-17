@@ -11,7 +11,7 @@ GEM
   specs:
     docile (1.4.0)
     minitest (5.16.3)
-    prettier_print (0.1.0)
+    prettier_print (1.0.0)
     rake (13.0.6)
     rbs (2.7.0)
     simplecov (0.21.2)
