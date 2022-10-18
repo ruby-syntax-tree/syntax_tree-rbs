@@ -11,7 +11,7 @@ GEM
   specs:
     docile (1.4.0)
     minitest (5.16.3)
-    prettier_print (1.0.0)
+    prettier_print (1.0.1)
     rake (13.0.6)
     rbs (2.7.0)
     simplecov (0.21.2)
@@ -20,8 +20,8 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
-    syntax_tree (3.6.3)
-      prettier_print
+    syntax_tree (4.0.1)
+      prettier_print (>= 1.0.1)
 
 PLATFORMS
   arm64-darwin-21
