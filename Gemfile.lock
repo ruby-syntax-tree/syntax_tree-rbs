@@ -10,7 +10,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     docile (1.4.0)
-    minitest (5.17.0)
+    minitest (5.18.0)
     prettier_print (1.2.0)
     rake (13.0.6)
     rbs (3.0.2)
