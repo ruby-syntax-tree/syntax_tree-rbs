@@ -4,9 +4,6 @@ require "prettier_print"
 require "rbs"
 require "syntax_tree"
 
-require_relative "rbs/shims"
-require_relative "rbs/version"
-
 module SyntaxTree
   module RBS
     # This is the parent class of any of the visitors that we define in this
@@ -53,7 +50,8 @@ module SyntaxTree
       end
 
       def parse(source)
-        Root.new(::RBS::Parser.parse_signature(source))
+        _, _, declarations = ::RBS::Parser.parse_signature(source)
+        Root.new(declarations)
       end
 
       def read(filepath)
@@ -65,6 +63,8 @@ module SyntaxTree
   register_handler(".rbs", RBS)
 end
 
+require_relative "rbs/shims"
 require_relative "rbs/entrypoints"
 require_relative "rbs/format"
 require_relative "rbs/pretty_print"
+require_relative "rbs/version"
