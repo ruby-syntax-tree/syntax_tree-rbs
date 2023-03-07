@@ -13,26 +13,8 @@ module SyntaxTree
         q.text(node.to_s)
       end
 
-      # Visit a RBS::AST::Declarations::Alias node.
-      def visit_alias_declaration(node)
-        print_comment(node)
-        print_annotations(node)
-
-        q.group do
-          q.text("type ")
-          visit(node.name)
-          q.text(" =")
-          q.group do
-            q.indent do
-              q.breakable
-              visit(node.type)
-            end
-          end
-        end
-      end
-
       # Visit a RBS::AST::Members::Alias node.
-      def visit_alias_member(node)
+      def visit_alias(node)
         print_comment(node)
         print_annotations(node)
 
@@ -299,9 +281,9 @@ module SyntaxTree
           )
           q.text(":")
 
-          if node.types.length == 1 && !node.overload?
+          if node.overloads.length == 1 && !node.overloading?
             q.text(" ")
-            print_method_signature(node.types.first)
+            print_method_overload(node.overloads.first)
           else
             separator =
               lambda do
@@ -312,11 +294,11 @@ module SyntaxTree
             q.group do
               q.indent do
                 q.breakable
-                q.seplist(node.types, separator) do |type|
-                  print_method_signature(type)
+                q.seplist(node.overloads, separator) do |overload|
+                  print_method_overload(overload)
                 end
 
-                if node.overload?
+                if node.overloading?
                   separator.call
                   q.text("...")
                 end
@@ -452,6 +434,24 @@ module SyntaxTree
         end
       end
 
+      # Visit a RBS::AST::Declarations::TypeAlias node.
+      def visit_type_alias(node)
+        print_comment(node)
+        print_annotations(node)
+
+        q.group do
+          q.text("type ")
+          visit(node.name)
+          q.text(" =")
+          q.group do
+            q.indent do
+              q.breakable
+              visit(node.type)
+            end
+          end
+        end
+      end
+
       # Visit a RBS::TypeName node.
       def visit_type_name(node)
         q.text(node.to_s)
@@ -548,6 +548,11 @@ module SyntaxTree
           visit(member)
           last_line = member.location.end_line
         end
+      end
+
+      # (T t) -> void
+      def print_method_overload(node)
+        print_method_signature(node.method_type)
       end
 
       # (T t) -> void

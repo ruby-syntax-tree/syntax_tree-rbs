@@ -48,13 +48,6 @@ module RBS
         include SyntaxTree::RBS::Entrypoints
       end
 
-      # type foo = String
-      class Alias
-        def accept(visitor)
-          visitor.visit_alias_declaration(self)
-        end
-      end
-
       # class Foo end
       class Class
         def accept(visitor)
@@ -89,6 +82,13 @@ module RBS
           visitor.visit_module_declaration(self)
         end
       end
+
+      # type foo = String
+      class TypeAlias
+        def accept(visitor)
+          visitor.visit_type_alias(self)
+        end
+      end
     end
 
     module Members
@@ -100,7 +100,7 @@ module RBS
       # alias self.foo self.bar
       class Alias
         def accept(visitor)
-          visitor.visit_alias_member(self)
+          visitor.visit_alias(self)
         end
       end
 

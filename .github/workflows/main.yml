@@ -1,7 +1,9 @@
 name: Main
+
 on:
 - push
-- pull_request_target
+- pull_request
+
 jobs:
   ci:
     strategy:
@@ -11,14 +13,15 @@ jobs:
         - '2.7.0'
         - '3.0'
         - '3.1'
+        - '3.2'
         gemfile:
         - rbs1
         - rbs2
+        - rbs3
     name: CI
     runs-on: ubuntu-latest
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}.gemfile
-      CI: true
     steps:
     - uses: actions/checkout@master
     - uses: ruby/setup-ruby@v1
@@ -29,17 +32,3 @@ jobs:
       run: |
         bundle exec rake test
         bundle exec rake stree:check
-  automerge:
-    name: AutoMerge
-    needs: ci
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]'
-    steps:
-    - uses: actions/github-script@v3
-      with:
-        script: |
-          github.pulls.merge({
-            owner: context.payload.repository.owner.login,
-            repo: context.payload.repository.name,
-            pull_number: context.payload.pull_request.number
-          })

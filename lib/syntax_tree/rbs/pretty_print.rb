@@ -13,18 +13,8 @@ module SyntaxTree
         q.text("(#{node.class.name.downcase})")
       end
 
-      # Visit a RBS::AST::Declarations::Alias node.
-      def visit_alias_declaration(node)
-        group("constant") do
-          print_comment(node)
-          print_annotations(node)
-          visit_field("name", node.name)
-          visit_field("type", node.type)
-        end
-      end
-
       # Visit a RBS::AST::Members::Alias node.
-      def visit_alias_member(node)
+      def visit_alias(node)
         group("alias") do
           print_comment(node)
           print_annotations(node)
@@ -209,12 +199,14 @@ module SyntaxTree
           pp_field("kind", node.kind)
           pp_field("name", node.name)
           pp_field("visibility", node.visibility) if node.visibility
-          bool_field("overload") if node.overload?
+          bool_field("overload") if node.overloading?
 
           q.breakable
-          q.text("types=")
+          q.text("overloads=")
           q.group(2, "[", "]") do
-            q.seplist(node.types) { |type| print_method_signature(type) }
+            q.seplist(node.overloads) do |overload|
+              print_method_overload(overload)
+            end
           end
         end
       end
@@ -291,6 +283,16 @@ module SyntaxTree
       # Visit a RBS::Types::Tuple node.
       def visit_tuple_type(node)
         group("tuple") { pp_field("types", node.types) }
+      end
+
+      # Visit a RBS::AST::Declarations::TypeAlias node.
+      def visit_type_alias(node)
+        group("constant") do
+          print_comment(node)
+          print_annotations(node)
+          visit_field("name", node.name)
+          visit_field("type", node.type)
+        end
       end
 
       # Visit a RBS::TypeName node.
@@ -402,6 +404,10 @@ module SyntaxTree
           q.breakable
           q.pp(comment.string)
         end
+      end
+
+      def print_method_overload(node)
+        print_method_signature(node.method_type)
       end
 
       def print_method_signature(node)
