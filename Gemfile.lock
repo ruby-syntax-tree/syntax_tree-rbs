@@ -14,7 +14,7 @@ GEM
     minitest (5.22.2)
     prettier_print (1.2.1)
     rake (13.1.0)
-    rbs (3.4.3)
+    rbs (3.4.4)
       abbrev
     simplecov (0.22.0)
       docile (~> 1.1)
