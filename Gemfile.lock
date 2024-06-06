@@ -9,13 +9,11 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    abbrev (0.1.2)
     docile (1.4.0)
     minitest (5.23.1)
     prettier_print (1.2.1)
     rake (13.2.1)
-    rbs (3.4.4)
-      abbrev
+    rbs (3.5.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
