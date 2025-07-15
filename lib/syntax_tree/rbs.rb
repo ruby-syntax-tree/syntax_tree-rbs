@@ -41,7 +41,7 @@ module SyntaxTree
     end
 
     class << self
-      def format(source, maxwidth = 80, _options = {})
+      def format(source, maxwidth = 80, options: nil)
         formatter = Formatter.new(source, [], maxwidth)
         parse(source).format(formatter)
 
