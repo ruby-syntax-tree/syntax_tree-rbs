@@ -16,7 +16,7 @@ GEM
     prettier_print (1.2.1)
     prism (1.7.0)
     rake (13.3.1)
-    rbs (3.9.5)
+    rbs (3.10.0)
       logger
     simplecov (0.22.0)
       docile (~> 1.1)
