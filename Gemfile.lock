@@ -11,7 +11,7 @@ GEM
   specs:
     docile (1.4.1)
     logger (1.7.0)
-    minitest (6.0.0)
+    minitest (6.0.1)
       prism (~> 1.5)
     prettier_print (1.2.1)
     prism (1.7.0)
