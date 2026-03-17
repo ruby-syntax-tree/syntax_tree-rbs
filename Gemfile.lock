@@ -18,8 +18,9 @@ GEM
     prettier_print (1.2.1)
     prism (1.9.0)
     rake (13.3.1)
-    rbs (3.10.3)
+    rbs (4.0.0)
       logger
+      prism (>= 1.6.0)
       tsort
     simplecov (0.22.0)
       docile (~> 1.1)
